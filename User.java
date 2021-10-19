@@ -1,50 +1,40 @@
 package org.raf.battleship;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 import java.util.Scanner;
 
 public class User {
 	
-	/*
-	 * can only really handle one line at a time. multiple lines wouldn't
-	 * break it though.
-	 */
 	static void setShip(){
-		shipSetter(5);
-		shipSetter(4);
-		shipSetter(3);
-		shipSetter(3);
-		shipSetter(2);
-//		System.out.println("Input Coordinates for ship of size 5:"
-//				+ "Example: F1 F5");
-//		Scanner scannerObj = new Scanner(System.in);
-//		String userInput = scannerObj.nextLine();
-//		while(true) {
-//			if(isValidShipCoord(userInput)) {
-//				break;
-//			} else {
-//				System.out.println("Coordinates not valid. Input Ex (F1 F5)");
-//				userInput = scannerObj.nextLine(); // user input
-//			}
-//		}
-	
+		int n = 5;
+		shipSetter(5, n);
+		Board.printBoard();
+		n--;
+		shipSetter(4, n);
+		Board.printBoard();
+		n--;
+		shipSetter(3, n);
+		Board.printBoard();
+		n--;
+		shipSetter(3, n);
+		Board.printBoard();
+		n--;
+		shipSetter(2, n);
+		Board.printBoard();
    }
 
-	private static void shipSetter(int shipSize) {
+	private static void shipSetter(int shipSize, int n) {
 		Board.printBoard();
-		System.out.println("Input Coordinates for ship of size "
-				+ shipSize
-				+ "Example: F1 F5");
+		Board.printInstructions(n);
+		n--;
 		Scanner scannerObj = new Scanner(System.in);
 		String userInput = scannerObj.nextLine();
 		while(true) {
 			if(isValidShipCoord(userInput, shipSize)) {
 				break;
 			} else {
-				Board.printBoard();
-				System.out.println("Coordinates not valid. Input Ex (F1 F5)");
+				
+				//System.out.println("Coordinates not valid. Input Ex (F1 F5)");
 				userInput = scannerObj.nextLine(); // user input
 			}
 		}
@@ -61,16 +51,16 @@ public class User {
 	    while (st.hasMoreTokens()) {
 	    	Token[i] = st.nextToken();
 	    	i++;
-	    	System.out.println("Num of Tokens read: " + i);  
+	    	//System.out.println("Num of Tokens read: " + i);  
 	    	if (i >= 2) {break;}
 	    }
-	    System.out.println(Token[0]);
-	    System.out.println(Token[1]);
+	    //System.out.println(Token[0]);
+	    //System.out.println(Token[1]);
 	    if (i == 1 || Token[1] == null) {return false;}
 	    
 	    // currently working
 	    if(Board.isValidBoardCoord(Token[0]) && Board.isValidBoardCoord(Token[1])) {
-	    	System.out.println("isvalidcoords");
+	    	//System.out.println("isvalidcoords");
 	    	if (isValidPlacement(Token[0], Token[1], shipSize)) {
 	    		return true;
 	    	}
@@ -85,7 +75,6 @@ public class User {
 				return true;
 			}
 		}
-		
 		return false; //tmp
 	}
 	

@@ -14,7 +14,7 @@ class Board {
 	}
 	
 	static void printBoard() {
-		System.out.println("\n\n  1 2 3 4 5 6 7 8 9 10");
+		System.out.println("\n  1 2 3 4 5 6 7 8 9 10");
 		char letter = 'A';
 		for (int i = 0; i < boardsize; i++) {
 			System.out.println(Character.toString(letter) + " " 
@@ -94,11 +94,11 @@ class Board {
 				if (isFreeHorizontal(a.charAt(0), aval, bval)) { // a.charAt(0) == b.charAt(0)
 					goodShipHorizontal(a.charAt(0), aval, bval);
 				} else {
-					System.out.println("Da Sea Be Not Free, Yarr");
+					System.out.println("\naError! Wrong ship location! Try again:\n");
 					return false;
 				}
 			} else {
-				System.out.println("Coordinated Don't Match Ship Size");
+				System.out.println("\nError! Wrong length of the Submarine! Try again:\n");
 				return false;
 			}
 			
@@ -116,13 +116,15 @@ class Board {
 					if(isFreeVertical(isTen, aval, bval)) {
 						goodShipVertical(isTen, aval, bval);
 					} else {
-						System.out.println("Da Sea Be Not Free, YarrYarr");
+						//System.out.println("\nbError! Wrong ship location! Try again:\n");
+						return false;
 					}
 				} else {
-					System.out.println("Cordinates Don't Match Ship Size");
+					System.out.println("\nError! Wrong length of the Submarine! Try again:\n");
 					return false;
 				}
 			} else {
+				System.out.println("\nError Wrong ship location! Try Again\n");
 				return false;
 			}
 		
@@ -150,8 +152,20 @@ class Board {
 		}
 		for (int i = b-1; i < a; i++) {
 			if(board[nrow][i] != '~') {
-				System.out.println("Yarr the Sea be filled");
+				System.out.println("\nError! You placed it too close to another one. Try again:\n");
 				return false;
+			}
+			for (int k = 0; k < 3; k++) {
+				for (int k2 = 0; k2 < 3; k2++) {
+					try {
+						if (board[nrow + (k2 - 1)][i + (k - 1)] == 'O') {
+							System.out.println("\nError! You placed it too close to another one. Try again:\n");
+							return false;
+						}
+					} catch (ArrayIndexOutOfBoundsException e) {
+						//System.out.println("\nrow " + (nrow + (k2-1)) + "\ncolumn: " + (i + (k-1)));
+					}
+				}
 			}
 		}
 		return true;
@@ -167,7 +181,7 @@ class Board {
 		for (int i = b-1; i < a; i++) {
 			board[nrow][i] = 'O';
 		}
-		System.out.println("Ship of size Placed");
+		//System.out.println("Ship of size Placed");
 	}
 
 	static boolean isFreeVertical(char column, int a, int b) {
@@ -179,11 +193,22 @@ class Board {
 			a = b;
 			b = tmp;
 		}
-		System.out.println("a = " + a + "  b = " + b + "  ncolumn = " + ncolumn);
 		for (int i = b; i <= a; i++) {
 			if(board[i][ncolumn] != '~') {
-				System.out.println("Yarr the Sea be filled");
+				System.out.println("\nError! You placed it too close to another one. Try again:\n");
 				return false;
+			}
+			for (int k = 0; k < 3; k++) {
+				for (int k2 = 0; k2 < 3; k2++) {
+					try {
+						if (board[i + (k2 - 1)][ncolumn + (k - 1)] == 'O') {
+							System.out.println("\nError! You placed it too close to another one. Try again:\n");
+							return false;
+						}
+					} catch (ArrayIndexOutOfBoundsException e) {
+						//System.out.println("\nrow " + (i + (k2-1)) + "\ncolumn: " + (ncolumn + (k-1)));
+					}
+				}
 			}
 		}
 		return true;
@@ -202,6 +227,85 @@ class Board {
 		for (int i = b; i <= a; i++) {
 			board[i][ncolumn] = 'O';
 		}
-		System.out.println("Ship of size Placed");
+		//System.out.println("Ship of size Placed");
+	}
+	
+	static void printInstructions(int a) {
+		switch(a) {
+		case 5: System.out.println("\nEnter the coordinates of the Aircraft Carrier (5 cells):\n");
+		break;
+		case 4: System.out.println("\nEnter the coordinates of the Battleship (4 cells):\n");
+		break;
+		case 3: System.out.println("\nEnter the coordinates of the Submarine (3 cells):\n");
+		break;
+		case 2: System.out.println("\nEnter the coordinates of the Cruiser (3 cells):\n");
+		break;
+		case 1: System.out.println("\nEnter the coordinates of the Destroyer (2 cells):\n");
+		break;
+		default : System.out.println("\nToo many ships\n");
+		}
+	}
+	
+	static boolean testArrOut(char row, int a, int b) {
+		int nrow = convertLetter(row);
+		int tmp = a;
+		if (a < b) {
+			a = b;
+			b = tmp;
+		}
+		for (int i = b-1; i < a; i++) {
+			if(board[nrow][i] != '~') {
+				//System.out.println("\nError! You placed it too close to another one. Try again:\n");
+				return false;
+			}
+			
+			for (int k = 0; k < 3; k++) {
+				for (int k2 = 0; k2 < 3; k2++) {
+					try {
+						if (board[nrow + (k2 - 1)][i + (k - 1)] == 'O') {
+							System.out.println("\nError! YouKKK placed it too close to another one. Try again:\n");
+						}
+					} catch (ArrayIndexOutOfBoundsException e) {
+						System.out.println("\nrow " + (nrow + (k2-1)) + "\ncolumn: " + (i + (k-1)));
+					}
+				}
+			}
+		}
+		return true;
+	}
+	
+	
+	static boolean testArrOut2(char column, int a, int b) {
+		int ncolumn = Character.getNumericValue(column);
+		ncolumn -= 1;
+		if(column == ':') {ncolumn = 9;}
+		int tmp = a;
+		if (a < b) {
+			a = b;
+			b = tmp;
+		}
+		for (int i = b; i <= a; i++) {
+			if(board[i][ncolumn] != '~') {
+				System.out.println("\nError! You placed it too close to another one. Try again:\n");
+				return false;
+			}
+			for (int k = 0; k < 3; k++) {
+				for (int k2 = 0; k2 < 3; k2++) {
+					try {
+						if (board[i + (k2 - 1)][ncolumn + (k - 1)] == 'O') {
+							System.out.println("\nError! YouKKK placed it too close to another one. Try again:\n");
+							//return false;
+						}
+					} catch (ArrayIndexOutOfBoundsException e) {
+						System.out.println("\nrow " + (i + (k2-1)) + "\ncolumn: " + (ncolumn + (k-1)));
+					}
+				}
+			}
+		}
+		return true;
+	}
+	
+	static void setTestMark(int row, int column) {
+		board[row][column] = 'O';
 	}
 }
