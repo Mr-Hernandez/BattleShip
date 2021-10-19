@@ -308,4 +308,35 @@ class Board {
 	static void setTestMark(int row, int column) {
 		board[row][column] = 'O';
 	}
+	
+	static boolean fireFireFire(String token) {
+		//System.out.println("\nTake a shot!\n");
+		if(isValidBoardCoord(token)) {
+			int letter = convertLetter(token.charAt(0));
+			int num = Character.getNumericValue(token.charAt(1));
+			num -= 1; // adjust to 0-9
+			if(isTen(token)) {
+				num = 9; // position 10, changed to 9 for array call use
+			}
+			if (board[letter][num] == 'O') {
+				board[letter][num] = 'X';
+				System.out.println("\nYou hit a ship!\n");
+				return true;
+			}
+			if (board[letter][num] == '~') {
+				board[letter][num] = 'M';
+				System.out.println("\nYou missed!\n");
+				return true;
+			}
+			if (board[letter][num] == 'X') {
+				//board[letter][num] = 'X';
+				System.out.println("\nOverkill\n");
+				return true;
+			}
+		} else {
+			System.out.println("\nError! You entered the wrong coordinates! Try again:\n");
+			return false;
+		}
+		return true;
+	}
 }

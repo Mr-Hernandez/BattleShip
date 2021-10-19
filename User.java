@@ -1,11 +1,12 @@
 package org.raf.battleship;
 
+import java.util.Scanner;
 import java.util.StringTokenizer;
 import java.util.Scanner;
 
 public class User {
 	
-	static void setShip(){
+	static void setShip() {
 		int n = 5;
 		shipSetter(5, n);
 		Board.printBoard();
@@ -24,7 +25,7 @@ public class User {
    }
 
 	private static void shipSetter(int shipSize, int n) {
-		Board.printBoard();
+		//Board.printBoard();
 		Board.printInstructions(n);
 		n--;
 		Scanner scannerObj = new Scanner(System.in);
@@ -38,9 +39,9 @@ public class User {
 				userInput = scannerObj.nextLine(); // user input
 			}
 		}
-		if(shipSize == 2) {
-		scannerObj.close();
-		}
+//		if(shipSize == 2) {
+//		scannerObj.close();
+//		}
 	}
 	
 	private static boolean isValidShipCoord(String s, int shipSize) {
@@ -77,5 +78,7 @@ public class User {
 		}
 		return false; //tmp
 	}
+	
+
 	
 }
