@@ -13,6 +13,10 @@ public class User {
 	 */
 	static void setShip(){
 		shipSetter(5);
+		shipSetter(4);
+		shipSetter(3);
+		shipSetter(3);
+		shipSetter(2);
 //		System.out.println("Input Coordinates for ship of size 5:"
 //				+ "Example: F1 F5");
 //		Scanner scannerObj = new Scanner(System.in);
@@ -25,10 +29,11 @@ public class User {
 //				userInput = scannerObj.nextLine(); // user input
 //			}
 //		}
-//		scannerObj.close();
+	
    }
 
 	private static void shipSetter(int shipSize) {
+		Board.printBoard();
 		System.out.println("Input Coordinates for ship of size "
 				+ shipSize
 				+ "Example: F1 F5");
@@ -38,11 +43,14 @@ public class User {
 			if(isValidShipCoord(userInput, shipSize)) {
 				break;
 			} else {
+				Board.printBoard();
 				System.out.println("Coordinates not valid. Input Ex (F1 F5)");
 				userInput = scannerObj.nextLine(); // user input
 			}
 		}
+		if(shipSize == 2) {
 		scannerObj.close();
+		}
 	}
 	
 	private static boolean isValidShipCoord(String s, int shipSize) {
@@ -63,15 +71,19 @@ public class User {
 	    // currently working
 	    if(Board.isValidBoardCoord(Token[0]) && Board.isValidBoardCoord(Token[1])) {
 	    	System.out.println("isvalidcoords");
-	    	isValidPlacement(Token[0], Token[1], shipSize);
+	    	if (isValidPlacement(Token[0], Token[1], shipSize)) {
+	    		return true;
+	    	}
 	    }   
 	    
-	    return true;
+	    return false;
 	}
 	
 	private static boolean isValidPlacement(String a, String b, int shipSize) {
 		if(!Board.isSameCoord(a,b)) {
-			Board.placeShip(a, b, shipSize);
+			if(Board.placeShip(a, b, shipSize)) {
+				return true;
+			}
 		}
 		
 		return false; //tmp

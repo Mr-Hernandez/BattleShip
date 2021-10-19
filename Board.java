@@ -77,23 +77,56 @@ class Board {
 	}
 	
 	static boolean placeShip(String a, String b, int shipSize) {
-		if (a.charAt(0) == b.charAt(0)) {
+		if (a.charAt(0) == b.charAt(0)) { // if rows the same
+			int aval;
+			int bval;
 			if (isTen(a)) {
-				int bval = Character.getNumericValue(b.charAt(1));
-				if(Math.abs(10 - bval) + 1 == shipSize) {
-					if (isFreeHorizontal(a.charAt(0), 10, bval)) {
-						goodShip(a.charAt(0), 10, bval);
-					}
+				aval = 10;
+				bval = Character.getNumericValue(b.charAt(1));
+			} else if (isTen(b)) {
+				aval = Character.getNumericValue(a.charAt(1));
+				bval = 10;
+			} else {
+				aval = Character.getNumericValue(a.charAt(1));
+				bval = Character.getNumericValue(b.charAt(1));
+			}
+			if(Math.abs(aval - bval) + 1 == shipSize) {
+				if (isFreeHorizontal(a.charAt(0), aval, bval)) { // a.charAt(0) == b.charAt(0)
+					goodShipHorizontal(a.charAt(0), aval, bval);
 				} else {
+					System.out.println("Da Sea Be Not Free, Yarr");
 					return false;
 				}
-			} else if (isTen(b)) {
-				
 			} else {
-				
+				System.out.println("Coordinated Don't Match Ship Size");
+				return false;
 			}
-		}
-		return false;  // tmp remove later
+			
+		} else if (a.charAt(1) == b.charAt(1)) { // if columns are the same
+				int aval = convertLetter(a.charAt(0));
+				int bval = convertLetter(b.charAt(0));
+				if(Math.abs(aval - bval) + 1 == shipSize) {
+					char isTen;
+					if(isTen(a) && isTen(b)) {
+						isTen = ':';
+						System.out.println("isTen is :");
+					} else {
+						isTen = a.charAt(1);
+					}
+					if(isFreeVertical(isTen, aval, bval)) {
+						goodShipVertical(isTen, aval, bval);
+					} else {
+						System.out.println("Da Sea Be Not Free, YarrYarr");
+					}
+				} else {
+					System.out.println("Cordinates Don't Match Ship Size");
+					return false;
+				}
+			} else {
+				return false;
+			}
+		
+		return true;  // tmp remove later
 	} 
 	
 	static boolean isTen(String a) {
@@ -124,7 +157,7 @@ class Board {
 		return true;
 	}
 	
-	static void goodShip(char row, int a, int b) {
+	static void goodShipHorizontal(char row, int a, int b) {
 		int nrow = convertLetter(row);
 		int tmp = a;
 		if (a < b) {
@@ -136,14 +169,39 @@ class Board {
 		}
 		System.out.println("Ship of size Placed");
 	}
-//	static boolean isFreeVertical(char column, char a, char b) {
-//		int nrow = convertLetter(column);
-//		
-//		for (int i = b; i < a; i++) {
-//			if(board[nrow][i] != '~') {
-//				return false;
-//			}
-//		}
-//		return true;
-//	}
+
+	static boolean isFreeVertical(char column, int a, int b) {
+		int ncolumn = Character.getNumericValue(column);
+		ncolumn -= 1;
+		if(column == ':') {ncolumn = 9;}
+		int tmp = a;
+		if (a < b) {
+			a = b;
+			b = tmp;
+		}
+		System.out.println("a = " + a + "  b = " + b + "  ncolumn = " + ncolumn);
+		for (int i = b; i <= a; i++) {
+			if(board[i][ncolumn] != '~') {
+				System.out.println("Yarr the Sea be filled");
+				return false;
+			}
+		}
+		return true;
+	}
+	
+	
+	static void goodShipVertical(char column, int a, int b) {
+		int ncolumn = Character.getNumericValue(column);
+		ncolumn -= 1;
+		if(column == ':') {ncolumn = 9;}
+		int tmp = a;
+		if (a < b) {
+			a = b;
+			b = tmp;
+		}
+		for (int i = b; i <= a; i++) {
+			board[i][ncolumn] = 'O';
+		}
+		System.out.println("Ship of size Placed");
+	}
 }
