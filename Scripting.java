@@ -1,12 +1,20 @@
 package org.raf.battleship;
 
 public class Scripting {
-	public static void main(String[] args) {
-//		Board.createBoard();
-//		Board.setTestMark(2, 0);
-//		Board.printBoard();
-//		Board.testArrOut2('1', 0, 1);
-//		
-		
-	}
+//	public static final String D = "My";
+//	public static final int Max = 40;
+//	public static String hello = "Hello";
+//	
+//	public static void main(String[] args) {
+//	
+//		  System.out.println(D);
+//		  Max = 20;
+//		  
+//		  printHello();
+//		  
+//	}
+//	
+//	private static void printHello() {
+//		System.out.println(hello);
+//	}
 }

@@ -7,8 +7,6 @@ class TheMain {
 		Board.printBoard();
 		User.setShip();
 		gameLoop.userInputFire();
-	}
-	
-	
+	}	
 }
 

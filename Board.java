@@ -4,11 +4,16 @@ class Board {
 	
 	static final int boardsize = 10;
 	static char[][] board = new char[boardsize][boardsize];
+	static char[][] boardI = new char[boardsize][boardsize];
+	
+	static ship[] ships = new ship[5];
+	static int shipCount = 0;
 	
 	static void createBoard() {
 		for (int i = 0; i < board.length; i++) {
 			for (int j = 0; j < board.length; j++) {
 				board[i][j] = '~';
+				boardI[i][j] = '~';
 			}
 		}
 	}
@@ -23,6 +28,21 @@ class Board {
 					+ board[i][4] + " " + board[i][5] + " "
 					+ board[i][6] + " " + board[i][7] + " "
 					+ board[i][8] + " " + board[i][9]);
+			letter += 1;
+		}
+		
+	}
+	
+	static void printBoardI() {
+		System.out.println("\n  1 2 3 4 5 6 7 8 9 10");
+		char letter = 'A';
+		for (int i = 0; i < boardsize; i++) {
+			System.out.println(Character.toString(letter) + " " 
+					+ boardI[i][0] + " " + boardI[i][1] + " "
+					+ boardI[i][2] + " " + boardI[i][3] + " "
+					+ boardI[i][4] + " " + boardI[i][5] + " "
+					+ boardI[i][6] + " " + boardI[i][7] + " "
+					+ boardI[i][8] + " " + boardI[i][9]);
 			letter += 1;
 		}
 		
@@ -181,6 +201,10 @@ class Board {
 		for (int i = b-1; i < a; i++) {
 			board[nrow][i] = 'O';
 		}
+		ships[Board.shipCount] = new ship();
+		ships[Board.shipCount].shipSet(nrow, a, b, true);
+		Board.shipCount++;
+		
 		//System.out.println("Ship of size Placed");
 	}
 
@@ -227,6 +251,10 @@ class Board {
 		for (int i = b; i <= a; i++) {
 			board[i][ncolumn] = 'O';
 		}
+		ships[Board.shipCount] = new ship();
+		ships[Board.shipCount].shipSet(ncolumn, a, b, false);
+		Board.shipCount++;
+		
 		//System.out.println("Ship of size Placed");
 	}
 	
@@ -293,7 +321,7 @@ class Board {
 				for (int k2 = 0; k2 < 3; k2++) {
 					try {
 						if (board[i + (k2 - 1)][ncolumn + (k - 1)] == 'O') {
-							System.out.println("\nError! YouKKK placed it too close to another one. Try again:\n");
+							System.out.println("\nError! You placed it too close to another one. Try again:\n");
 							//return false;
 						}
 					} catch (ArrayIndexOutOfBoundsException e) {
@@ -311,7 +339,7 @@ class Board {
 	
 	static boolean fireFireFire(String token) {
 		//System.out.println("\nTake a shot!\n");
-		if(isValidBoardCoord(token)) {
+		if(isValidBoardCoordForFire(token)) {
 			int letter = convertLetter(token.charAt(0));
 			int num = Character.getNumericValue(token.charAt(1));
 			num -= 1; // adjust to 0-9
@@ -320,16 +348,38 @@ class Board {
 			}
 			if (board[letter][num] == 'O') {
 				board[letter][num] = 'X';
-				System.out.println("\nYou hit a ship!\n");
-				return true;
+				boardI[letter][num] = 'X';
+				Board.printBoardI();
+//				if(ship.isAllSunk(ships)) {
+//					return true;
+//				}
+				//System.out.println("fire for loop");
+
+				for (int i = 0; i < shipCount; i++) {
+					if(!ships[i].isSunk()) {
+						//System.out.println("isSunk?");
+						if(ships[i].check()) {
+							if(ship.isAllSunk(Board.ships)) {
+								return true;
+							}
+							System.out.println("You sank a ship. Specify a new target: ");
+							return true;
+						}
+					}
+				}
+				System.out.println("\nYou hit a ship! Try again\n");
+				return true;			
 			}
 			if (board[letter][num] == '~') {
 				board[letter][num] = 'M';
-				System.out.println("\nYou missed!\n");
+				boardI[letter][num] = 'M';
+				Board.printBoardI();
+				System.out.println("\nYou missed! Try again:\n");
 				return true;
 			}
 			if (board[letter][num] == 'X') {
 				//board[letter][num] = 'X';
+				Board.printBoardI();
 				System.out.println("\nOverkill\n");
 				return true;
 			}
@@ -339,4 +389,32 @@ class Board {
 		}
 		return true;
 	}
+	
+	
+	static boolean isValidBoardCoordForFire(String token) {
+		char letterCoord = token.charAt(0);
+		if (convertLetter(letterCoord) == -1) {return false;}
+		if (token.charAt(1) < '1' || token.charAt(1) > '9') {return false;}
+		if (token.length() >= 3 && token.charAt(2) != '0') {
+			return false;
+		}
+		return true;
+	}
+	
+	static boolean isHit(String token) {
+		//System.out.println("\nTake a shot!\n");
+		if(isValidBoardCoordForFire(token)) {
+			int letter = convertLetter(token.charAt(0));
+			int num = Character.getNumericValue(token.charAt(1));
+			num -= 1; // adjust to 0-9
+			if(isTen(token)) {
+				num = 9; // position 10, changed to 9 for array call use
+			}
+			if (board[letter][num] == 'O') {
+				return true;				
+			}
+			
+		}
+		return false;
+	} 
 }

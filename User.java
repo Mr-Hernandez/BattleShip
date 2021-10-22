@@ -4,7 +4,7 @@ import java.util.Scanner;
 import java.util.StringTokenizer;
 import java.util.Scanner;
 
-public class User {
+class User {
 	
 	static void setShip() {
 		int n = 5;
