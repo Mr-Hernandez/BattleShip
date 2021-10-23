@@ -19,17 +19,16 @@ class ship {
 		return this.isSunk;
 	}
 	
-	
-	public boolean check() {
+	public boolean check(char[][] board) {
 		if(this.isHorizontal) {
-			for (int i = this.b-1; i < this.a; i++) {
-				if(Board.board[this.line][i] != 'X') {
+			for (int i = b-1; i < a; i++) {
+				if(board[line][i] != 'X') {
 					return false;
 				}
 			}
 		} else {
-			for (int i = this.b; i <= this.a; i++) {
-				if(Board.board[i][this.line] != 'X') {
+			for (int i = b; i <= a; i++) { // replace this.a with a
+				if(board[i][line] != 'X') {
 					return false;
 				}
 			}

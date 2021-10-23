@@ -2,36 +2,37 @@ package org.raf.battleship;
 
 import java.util.Scanner;
 import java.util.StringTokenizer;
-import java.util.Scanner;
 
 class User {
 	
-	static void setShip() {
+	
+	
+	static void setShip(Board board) {
 		int n = 5;
-		shipSetter(5, n);
-		Board.printBoard();
+		shipSetter(board, 5, n);
+		board.printBoard();
 		n--;
-		shipSetter(4, n);
-		Board.printBoard();
+		shipSetter(board, 4, n);
+		board.printBoard();
 		n--;
-		shipSetter(3, n);
-		Board.printBoard();
+		shipSetter(board, 3, n);
+		board.printBoard();
 		n--;
-		shipSetter(3, n);
-		Board.printBoard();
+		shipSetter(board, 3, n);
+		board.printBoard();
 		n--;
-		shipSetter(2, n);
-		Board.printBoard();
+		shipSetter(board, 2, n);
+		board.printBoard();
    }
 
-	private static void shipSetter(int shipSize, int n) {
+	private static void shipSetter(Board board, int shipSize, int n) {
 		//Board.printBoard();
-		Board.printInstructions(n);
+		board.printInstructions(n);
 		n--;
 		Scanner scannerObj = new Scanner(System.in);
 		String userInput = scannerObj.nextLine();
 		while(true) {
-			if(isValidShipCoord(userInput, shipSize)) {
+			if(isValidShipCoord(board, userInput, shipSize)) {
 				break;
 			} else {
 				
@@ -44,7 +45,7 @@ class User {
 //		}
 	}
 	
-	private static boolean isValidShipCoord(String s, int shipSize) {
+	private static boolean isValidShipCoord(Board board, String s, int shipSize) {
 		if(s == null || s.isEmpty()) {return false;}
 		StringTokenizer st = new StringTokenizer(s);
 	    int i = 0;
@@ -60,9 +61,9 @@ class User {
 	    if (i == 1 || Token[1] == null) {return false;}
 	    
 	    // currently working
-	    if(Board.isValidBoardCoord(Token[0]) && Board.isValidBoardCoord(Token[1])) {
+	    if(board.isValidBoardCoord(Token[0]) && board.isValidBoardCoord(Token[1])) {
 	    	//System.out.println("isvalidcoords");
-	    	if (isValidPlacement(Token[0], Token[1], shipSize)) {
+	    	if (isValidPlacement(board, Token[0], Token[1], shipSize)) {
 	    		return true;
 	    	}
 	    }   
@@ -70,15 +71,25 @@ class User {
 	    return false;
 	}
 	
-	private static boolean isValidPlacement(String a, String b, int shipSize) {
-		if(!Board.isSameCoord(a,b)) {
-			if(Board.placeShip(a, b, shipSize)) {
+	private static boolean isValidPlacement(Board board, String a, String b, int shipSize) {
+		if(!board.isSameCoord(a,b)) {
+			if(board.placeShip(a, b, shipSize)) {
 				return true;
 			}
 		}
 		return false; //tmp
 	}
-	
-
-	
+		
+	static void autoShip(Board board1, Board board2) {
+		board1.placeShip("A1", "E1", 5);
+		board1.placeShip("A3", "D3", 4);
+		board1.placeShip("A5", "C5", 3);
+		board1.placeShip("A7", "C7", 3);
+		board1.placeShip("A9", "B9", 2);
+		board2.placeShip("A2", "E2", 5);
+		board2.placeShip("A4", "D4", 4);
+		board2.placeShip("A6", "C6", 3);
+		board2.placeShip("A8", "C8", 3);
+		board2.placeShip("A10", "B10", 2);
+	}
 }

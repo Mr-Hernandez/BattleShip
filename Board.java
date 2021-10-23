@@ -2,14 +2,19 @@ package org.raf.battleship;
 
 class Board {
 	
-	static final int boardsize = 10;
-	static char[][] board = new char[boardsize][boardsize];
-	static char[][] boardI = new char[boardsize][boardsize];
+	 final int boardsize = 10;
+	 char[][] board = new char[boardsize][boardsize];
+	 char[][] boardI = new char[boardsize][boardsize];
 	
-	static ship[] ships = new ship[5];
-	static int shipCount = 0;
+	 ship[] ships = new ship[5];
+	 int shipCount = 0;
+	 String name;
+	 
+	 Board(String name) {
+		 this.name = name;
+	 }
 	
-	static void createBoard() {
+	 void createBoard() {
 		for (int i = 0; i < board.length; i++) {
 			for (int j = 0; j < board.length; j++) {
 				board[i][j] = '~';
@@ -18,7 +23,7 @@ class Board {
 		}
 	}
 	
-	static void printBoard() {
+	 void printBoard() {
 		System.out.println("\n  1 2 3 4 5 6 7 8 9 10");
 		char letter = 'A';
 		for (int i = 0; i < boardsize; i++) {
@@ -33,7 +38,7 @@ class Board {
 		
 	}
 	
-	static void printBoardI() {
+	 void printBoardI() {
 		System.out.println("\n  1 2 3 4 5 6 7 8 9 10");
 		char letter = 'A';
 		for (int i = 0; i < boardsize; i++) {
@@ -47,12 +52,8 @@ class Board {
 		}
 		
 	}
-	
-	static void updateBoard(String y, int x) {
 		
-	}
-	
-	static int convertLetter(char a) {
+	 int convertLetter(char a) {
 		switch(a) {
 			case 'A': return 0;
 			case 'B': return 1;
@@ -68,18 +69,15 @@ class Board {
 		}
 	}
 	
-	static boolean isValidBoardCoord(String token) {
+	 boolean isValidBoardCoord(String token) {
 		char letterCoord = token.charAt(0);
 		if (convertLetter(letterCoord) == -1) {return false;}
 		if (token.charAt(1) < '1' || token.charAt(1) > '9') {return false;}
-//		if (token.length() >= 3 && token.charAt(1) == '1') {
-//			if (token.charAt(2) == '0') 
-//		}
 		return true;
 		
 	}
 	
-	static boolean isSameCoord(String a, String b) {
+	 boolean isSameCoord(String a, String b) {
 		char L1 = a.charAt(0);
 		char L2 = b.charAt(0);
 		char N1 = a.charAt(1);
@@ -96,7 +94,7 @@ class Board {
 		return false;		// false: not same coordinate
 	}
 	
-	static boolean placeShip(String a, String b, int shipSize) {
+	 boolean placeShip(String a, String b, int shipSize) {
 		if (a.charAt(0) == b.charAt(0)) { // if rows the same
 			int aval;
 			int bval;
@@ -129,7 +127,7 @@ class Board {
 					char isTen;
 					if(isTen(a) && isTen(b)) {
 						isTen = ':';
-						System.out.println("isTen is :");
+						//System.out.println("isTen is :");
 					} else {
 						isTen = a.charAt(1);
 					}
@@ -151,7 +149,7 @@ class Board {
 		return true;  // tmp remove later
 	} 
 	
-	static boolean isTen(String a) {
+	 boolean isTen(String a) {
 		if(a.length() >= 3) {
 			if (a.charAt(1) == '1' && a.charAt(2) == '0') {
 				return true;
@@ -163,7 +161,7 @@ class Board {
 		}
 	}
 	
-	static boolean isFreeHorizontal(char row, int a, int b) {
+	 boolean isFreeHorizontal(char row, int a, int b) {
 		int nrow = convertLetter(row);
 		int tmp = a;
 		if (a < b) {
@@ -191,7 +189,7 @@ class Board {
 		return true;
 	}
 	
-	static void goodShipHorizontal(char row, int a, int b) {
+	 void goodShipHorizontal(char row, int a, int b) {
 		int nrow = convertLetter(row);
 		int tmp = a;
 		if (a < b) {
@@ -201,14 +199,14 @@ class Board {
 		for (int i = b-1; i < a; i++) {
 			board[nrow][i] = 'O';
 		}
-		ships[Board.shipCount] = new ship();
-		ships[Board.shipCount].shipSet(nrow, a, b, true);
-		Board.shipCount++;
+		ships[shipCount] = new ship();
+		ships[shipCount].shipSet(nrow, a, b, true);
+		shipCount++;
 		
 		//System.out.println("Ship of size Placed");
 	}
 
-	static boolean isFreeVertical(char column, int a, int b) {
+	 boolean isFreeVertical(char column, int a, int b) {
 		int ncolumn = Character.getNumericValue(column);
 		ncolumn -= 1;
 		if(column == ':') {ncolumn = 9;}
@@ -238,8 +236,7 @@ class Board {
 		return true;
 	}
 	
-	
-	static void goodShipVertical(char column, int a, int b) {
+	 void goodShipVertical(char column, int a, int b) {
 		int ncolumn = Character.getNumericValue(column);
 		ncolumn -= 1;
 		if(column == ':') {ncolumn = 9;}
@@ -251,14 +248,14 @@ class Board {
 		for (int i = b; i <= a; i++) {
 			board[i][ncolumn] = 'O';
 		}
-		ships[Board.shipCount] = new ship();
-		ships[Board.shipCount].shipSet(ncolumn, a, b, false);
-		Board.shipCount++;
+		ships[shipCount] = new ship();
+		ships[shipCount].shipSet(ncolumn, a, b, false);
+		shipCount++;
 		
 		//System.out.println("Ship of size Placed");
 	}
 	
-	static void printInstructions(int a) {
+	 void printInstructions(int a) {
 		switch(a) {
 		case 5: System.out.println("\nEnter the coordinates of the Aircraft Carrier (5 cells):\n");
 		break;
@@ -274,7 +271,7 @@ class Board {
 		}
 	}
 	
-	static boolean testArrOut(char row, int a, int b) {
+	 boolean testArrOut(char row, int a, int b) {
 		int nrow = convertLetter(row);
 		int tmp = a;
 		if (a < b) {
@@ -302,8 +299,7 @@ class Board {
 		return true;
 	}
 	
-	
-	static boolean testArrOut2(char column, int a, int b) {
+	 boolean testArrOut2(char column, int a, int b) {
 		int ncolumn = Character.getNumericValue(column);
 		ncolumn -= 1;
 		if(column == ':') {ncolumn = 9;}
@@ -333,13 +329,15 @@ class Board {
 		return true;
 	}
 	
-	static void setTestMark(int row, int column) {
+	 void setTestMark(int row, int column) {
 		board[row][column] = 'O';
 	}
 	
-	static boolean fireFireFire(String token) {
+	 boolean fireFireFire(String token) {
 		//System.out.println("\nTake a shot!\n");
+//		System.out.println("\n" + name + ", it's your turn:");
 		if(isValidBoardCoordForFire(token)) {
+			if(token.isEmpty() || token == null) {return false;}
 			int letter = convertLetter(token.charAt(0));
 			int num = Character.getNumericValue(token.charAt(1));
 			num -= 1; // adjust to 0-9
@@ -349,37 +347,33 @@ class Board {
 			if (board[letter][num] == 'O') {
 				board[letter][num] = 'X';
 				boardI[letter][num] = 'X';
-				Board.printBoardI();
-//				if(ship.isAllSunk(ships)) {
-//					return true;
-//				}
-				//System.out.println("fire for loop");
+//				printBoardI();
 
 				for (int i = 0; i < shipCount; i++) {
 					if(!ships[i].isSunk()) {
 						//System.out.println("isSunk?");
-						if(ships[i].check()) {
-							if(ship.isAllSunk(Board.ships)) {
+						if(ships[i].check(board)) {
+							if(ship.isAllSunk(ships)) {
 								return true;
 							}
-							System.out.println("You sank a ship. Specify a new target: ");
+							System.out.println("\nYou sank a ship.\n");
 							return true;
 						}
 					}
 				}
-				System.out.println("\nYou hit a ship! Try again\n");
+				System.out.println("\nYou hit a ship!\n");
 				return true;			
 			}
 			if (board[letter][num] == '~') {
 				board[letter][num] = 'M';
 				boardI[letter][num] = 'M';
-				Board.printBoardI();
-				System.out.println("\nYou missed! Try again:\n");
+//				printBoardI();
+				System.out.println("\nYou missed!\n");
 				return true;
 			}
 			if (board[letter][num] == 'X') {
 				//board[letter][num] = 'X';
-				Board.printBoardI();
+//				printBoardI();
 				System.out.println("\nOverkill\n");
 				return true;
 			}
@@ -390,8 +384,7 @@ class Board {
 		return true;
 	}
 	
-	
-	static boolean isValidBoardCoordForFire(String token) {
+	 boolean isValidBoardCoordForFire(String token) {
 		char letterCoord = token.charAt(0);
 		if (convertLetter(letterCoord) == -1) {return false;}
 		if (token.charAt(1) < '1' || token.charAt(1) > '9') {return false;}
@@ -401,7 +394,7 @@ class Board {
 		return true;
 	}
 	
-	static boolean isHit(String token) {
+	 boolean isHit(String token) {
 		//System.out.println("\nTake a shot!\n");
 		if(isValidBoardCoordForFire(token)) {
 			int letter = convertLetter(token.charAt(0));
@@ -417,4 +410,5 @@ class Board {
 		}
 		return false;
 	} 
+	 
 }
